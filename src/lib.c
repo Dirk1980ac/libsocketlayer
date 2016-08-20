@@ -4,7 +4,7 @@
  Author      : Dirk Gottschalk
  Version     : 1.1.3
  Copyright   : (c) 2015 Dirk Gottschalk <dirk.gottschalk1980@googlemail.com>
- Description : ContainerStatus Receiver
+ Description : Socket Abstraction Layer
  ============================================================================
  */
 
