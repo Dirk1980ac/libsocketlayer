@@ -10,11 +10,6 @@ AM_MAINTAINER_MODE
 AM_SILENT_RULES([yes])
 AC_PROG_CC
 
-
-
-
-
-
 dnl ***************************************************************************
 dnl Check for Windows
 dnl ***************************************************************************
@@ -37,12 +32,7 @@ esac
 AM_CONDITIONAL(PLATFORM_WIN32, test x"$platform_win32" = "xyes")
 AM_CONDITIONAL(NATIVE_WIN32, test x"$native_win32" = "xyes")
 
-
 LT_INIT([win32-dll])
-
-
-
-
 
 AC_OUTPUT([
 Makefile
