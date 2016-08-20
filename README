@@ -1,0 +1,10 @@
+This is a small socket abstraction Library.
+
+All functions are descirbes in the header file socketlayer.h.
+
+It compiles under GNU/Linux and MS-Windows (using mingw) and helps to develope
+cross platform applications without the need to care about different socket
+functions.
+
+The provided .spec files are intended to be used whith Fedora Linux, it's
+possible that there are changes required for other distros.
