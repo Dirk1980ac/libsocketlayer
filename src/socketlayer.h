@@ -34,10 +34,11 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-#endif /* __MINGW32__*/
-
 /* Globally defined socket type */
 #define socket_t int
+
+#endif /* __MINGW32__*/
+
 
 /* Funktion prototypes */
 extern void errorExit(char *error_message); /* Exit with error message */
