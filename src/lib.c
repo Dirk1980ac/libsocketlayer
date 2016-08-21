@@ -251,7 +251,7 @@ int tcpRecv( socket_t *sock, char *data, size_t size) {
 		data[len] = '\0';
 		return (len);
 	} else {
-		errorExit("ERROR on recv()"); */
+		errorExit("ERROR on recv()");
 		return (-1);
 	}
 }
