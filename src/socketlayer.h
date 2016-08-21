@@ -17,7 +17,7 @@
 #include <winsock2.h>
 #include <io.h>
 
-/* Globally defined socket type */
+/* Globally defined socket type (WINDOWS) */
 #define socket_t SOCKET
 
 #else
@@ -34,7 +34,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-/* Globally defined socket type */
+/* Globally defined socket type (LINUX) */
 #define socket_t int
 
 #endif /* __MINGW32__*/

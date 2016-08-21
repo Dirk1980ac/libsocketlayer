@@ -20,7 +20,6 @@
 /* Error message for Syslog  */
 void errorExit(char *error_message) {
 	fprintf(stderr, "%s: %d\n", error_message, WSAGetLastError());
-
 	exit (EXIT_FAILURE);
 }
 
