@@ -7,9 +7,9 @@ AM_CPPFLAGS = \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\"
 
-AM_CFLAGS =\
-	 -Wall\
-	 -g
+AM_CFLAGS = \
+	 -Wall \
+	 -g3
 
 lib_LTLIBRARIES = libsocketlayer.la
 

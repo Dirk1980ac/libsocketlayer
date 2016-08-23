@@ -1,21 +1,23 @@
 /*
  ============================================================================
- Name        : libslayer.c
+ Name        : socketlayer.h
  Author      : Dirk Gottschalk
  Version     : 1.1.3
  Copyright   : (c) 2015 Dirk Gottschalk <dirk.gottschalk1980@googlemail.com>
- Description : Socket Abstraction Layer
+ Description : Header for socket abstraction layer
  ============================================================================
  */
 
-#if __MINGW32__
+#include <socketlayer.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+
+#if __MINGW32__
 #include <windef.h>
 #include <winsock2.h>
-#include <socketlayer.h>
 
 /* Error message for Syslog  */
 void errorExit(char *error_message) {
@@ -162,7 +164,6 @@ void cleanUp(void) {
 	printf("Done cleanup...\n");
 }
 #else
-#include "socketlayer.h"
 
 /* Returns Errors and exits application. */
 void errorExit(char *error_message) {
