@@ -332,8 +332,8 @@ AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\"
 
 AM_CFLAGS = \
-	 -Wall\
-	 -g
+	 -Wall \
+	 -g3
 
 lib_LTLIBRARIES = libsocketlayer.la
 libsocketlayer_la_SOURCES = \
