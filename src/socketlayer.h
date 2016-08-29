@@ -4,28 +4,29 @@
  Author      : Dirk Gottschalk
  Version     : 2.0.0
  Copyright   : (c) 2015 Dirk Gottschalk <dirk.gottschalk1980@googlemail.com>
- Description : Network Socket abstraction Layer for Windows / Linux
+ Description : Header for socket abstraction layer
  ============================================================================
 */
 
 #ifndef SOCKETLAYER_H_
 #define SOCKETLAYER_H_
 
-#if __MINGW32__
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+
+#if __MINGW32__
+/* Windows header extension */
 #include <winsock2.h>
-#include <io.h>
+/* #include <io.h> */
+#include <windef.h>
 
 /* Globally defined socket type (WINDOWS) */
 #define socket_t SOCKET
-
 #else
 
-#include <stddef.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/socket.h>

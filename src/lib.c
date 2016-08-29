@@ -1,23 +1,18 @@
 /*
  ============================================================================
- Name        : socketlayer.h
+ Name        : socketlayer.c
  Author      : Dirk Gottschalk
  Version     : 1.1.3
  Copyright   : (c) 2015 Dirk Gottschalk <dirk.gottschalk1980@googlemail.com>
- Description : Header for socket abstraction layer
+ Description : Network Socket abstraction Layer for Windows / Linux
  ============================================================================
  */
 
 #include <socketlayer.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 
 #if __MINGW32__
-#include <windef.h>
-#include <winsock2.h>
+/* Source for MinGW compile */
+
 
 /* Error message for Syslog  */
 void errorExit(char *error_message) {
@@ -163,7 +158,10 @@ void cleanUp(void) {
 	WSACleanup();
 	printf("Done cleanup...\n");
 }
-#else
+
+#endif
+#if __linux__
+/* Source for Linux compile */
 
 /* Returns Errors and exits application. */
 void errorExit(char *error_message) {
