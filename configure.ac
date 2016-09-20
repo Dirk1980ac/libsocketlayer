@@ -1,8 +1,8 @@
 dnl Process this file with autoconf to produce a configure script.
-dnl Created by Anjuta application wizard.
 
 AC_INIT(socketlayer, 2.0.0)
 
+AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 
 AM_INIT_AUTOMAKE()
@@ -31,6 +31,8 @@ case $host_os in
 esac
 AM_CONDITIONAL(PLATFORM_WIN32, test x"$platform_win32" = "xyes")
 AM_CONDITIONAL(NATIVE_WIN32, test x"$native_win32" = "xyes")
+
+AC_CHECK_HEADERS([arpa/inet.h windef.h netinet/in.h stdlib.h sys/socket.h unistd.h windows.h winsock2.h error.h sys/types.h netdb.h])
 
 LT_INIT([win32-dll])
 
