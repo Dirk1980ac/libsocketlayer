@@ -160,6 +160,7 @@ void cleanUp(void) {
 }
 
 #endif
+
 #if __linux__
 /* Source for Linux compile */
 
