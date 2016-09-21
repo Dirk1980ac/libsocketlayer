@@ -1,6 +1,6 @@
 Name:           socketlayer
 Version:        2.0.0
-Release:        1%{?dist}
+Release:        4%{?dist}
 Summary:        Socket abstraction library
 
 License:	LGPLv2+        
