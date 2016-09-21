@@ -11,63 +11,29 @@
 #ifndef SOCKETLAYER_H_
 #define SOCKETLAYER_H_
 
-#include <config.h>
-
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-#ifdef HAVE_STDLIB_H
-# include <stdlib.h>
-#endif
-
-#ifdef HAVE_WINSOCK2_H
-# include <winsock2.h>
-#endif
-
-#ifdef HAVE_WINDOWS_H
-# include <windows.h>
-#endif
-
-#ifdef HAVE_WINDEF_H
-# include <windef.h>
-#endif
+#if __MINGW32__
+#include <winsock2.h>
+#include <windef.h>
 
 /* Globally defined socket type (WINDOWS) */
-#if __MINGW32__
-# define socket_t SOCKET
+#define socket_t SOCKET
 #endif
 
-#ifdef HAVE_ERROR_H
+#if __linux__
 # include <errno.h>
-#endif
-
-#ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
-#endif
-
-#ifdef HAVE_SYS_SOCKET_H
 # include <sys/socket.h>
-#endif
-
-#ifdef HAVE_NETINET_IN_H
 # include <netinet/in.h>
-#endif
-
-#ifdef HAVE_NETDB_H
 # include <netdb.h>
-#endif
-
-#ifdef HAVE_ARPA_INET_H
 # include <arpa/inet.h>
-#endif
-
-#if HAVE_UNISTD_H
 # include <unistd.h>
-#endif
 
 /* Globally defined socket type (LINUX) */
-#if __linux__
 #define socket_t int
 #endif 
 
