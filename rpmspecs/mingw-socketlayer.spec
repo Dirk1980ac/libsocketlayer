@@ -1,7 +1,7 @@
 %{?mingw_package_header}
 
 Name:           mingw-socketlayer
-Version:        2.0.0
+Version:        2.0.7
 Release:        4%{?dist}
 Summary:        MinGW socket abstraction layer
 
