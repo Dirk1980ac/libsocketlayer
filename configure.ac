@@ -1,12 +1,12 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(socketlayer, 2.0.7)
+AC_INIT(socketlayer, 2.0.8)
 
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 
 AM_INIT_AUTOMAKE()
-AM_MAINTAINER_MODE
+AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 AC_PROG_CC
 
@@ -36,8 +36,7 @@ AC_CHECK_HEADERS([arpa/inet.h windef.h netinet/in.h stdlib.h sys/socket.h unistd
 
 LT_INIT([win32-dll])
 
-AC_OUTPUT([
-Makefile
-src/socketlayer.pc
-src/Makefile
-])
+AC_CONFIG_FILES([Makefile
+		src/socketlayer.pc
+		src/Makefile])
+AC_OUTPUT
