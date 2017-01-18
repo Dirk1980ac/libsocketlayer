@@ -27,7 +27,7 @@ libsocketlayer_la_LDFLAGS += -lws2_32 -no-undefined
 endif
 
 if NATIVE_WIN32
-libsocketlayer_la_LDFLAGS += -lws2_32 -export-dynamic
+libsocketlayer_la_LDFLAGS += -lws2_32 -export-dynamic -avoid-version
 endif
 
 include_HEADERS = \

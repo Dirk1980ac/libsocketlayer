@@ -22,7 +22,7 @@ void errorExit(char *error_message) {
 /* Initializes TCP for Windows ("winsock"),
  * creates a socket
  * returns socket deskriptor . */
-int createSocket(int af, int type, int protocol) {
+int SLLIB_createSocket(int af, int type, int protocol) {
 	socket_t sock;
 	WORD wVersionRequested;
 	WSADATA wsaData;
@@ -38,7 +38,7 @@ int createSocket(int af, int type, int protocol) {
 }
 
 /* Binds the socket to address and Port. */
-void bindSocket(socket_t *sock, unsigned long adress, unsigned short port) {
+void SLLIB_bindSocket(socket_t *sock, unsigned long adress, unsigned short port) {
 	struct sockaddr_in server;
 
 	memset(&server, 0, sizeof(server));
@@ -50,14 +50,14 @@ void bindSocket(socket_t *sock, unsigned long adress, unsigned short port) {
 }
 
 /* Tells the socket to accept connections. */
-void listenSocket( socket_t *sock) {
+void SLLIB_listenSocket( socket_t *sock) {
 	if (listen(*sock, 5) == -1)
 	errorExit("Listen error!");
 }
 
 /* Handle connections to the clients.
  * accept() blocks until client accepts connection. */
-void acceptSocket( socket_t *socket, socket_t *new_socket) {
+void SLLIB_acceptSocket( socket_t *socket, socket_t *new_socket) {
 	struct sockaddr_in client;
 	unsigned int len;
 
@@ -68,7 +68,7 @@ void acceptSocket( socket_t *socket, socket_t *new_socket) {
 }
 
 /* Connects socket. */
-void connectSocket( socket_t *sock, char *serv_addr, unsigned short port) {
+void SLLIB_connectSocket( socket_t *sock, char *serv_addr, unsigned short port) {
 	struct sockaddr_in server;
 	struct hostent *host_info;
 	unsigned long addr;
@@ -93,13 +93,13 @@ void connectSocket( socket_t *sock, char *serv_addr, unsigned short port) {
 }
 
 /* Send data via TCP */
-void tcpSend( socket_t *sock, char *data, size_t size) {
+void SLLIB_tcpSend( socket_t *sock, char *data, size_t size) {
 	if (send(*sock, data, size, 0) == SOCKET_ERROR)
 	errorExit("ERROR: send()");
 }
 
 /* Receive data via TCP */
-int tcpRecv( socket_t *sock, char *data, size_t size) {
+int SLLIB_tcpRecv( socket_t *sock, char *data, size_t size) {
 	int len;
 	len = recv(*sock, data, size, 0);
 	if (len > 0 || len != SOCKET_ERROR)
@@ -110,7 +110,7 @@ int tcpRecv( socket_t *sock, char *data, size_t size) {
 }
 
 /* Send data via UDP */
-void udpSend( socket_t *sock, char *data, size_t size, char *addr,
+void SLLIB_udpSend( socket_t *sock, char *data, size_t size, char *addr,
 		unsigned short port) {
 	struct sockaddr_in addr_sento;
 	struct hostent *h;
@@ -133,7 +133,7 @@ void udpSend( socket_t *sock, char *data, size_t size, char *addr,
 }
 
 /* Receive data via UDP */
-int udpRecv( socket_t *sock, void *data, size_t size) {
+int SLLIB_udpRecv( socket_t *sock, void *data, size_t size) {
 	struct sockaddr_in addr_recvfrom;
 	unsigned int len;
 	int n;
@@ -148,11 +148,11 @@ int udpRecv( socket_t *sock, void *data, size_t size) {
 }
 
 /* Close socket and release Winsock */
-void closeSocket( socket_t *sock) {
+void SLLIB_closeSocket( socket_t *sock) {
 	closesocket(*sock);
 }
 
-void cleanUp(void) {
+void SLLIB_cleanUp(void) {
 	/* Cleanup Winsock */
 	WSACleanup();
 	printf("Done cleanup...\n");
@@ -170,7 +170,7 @@ void errorExit (char *error_message) {
 }
 
 /* Create socket */
-int createSocket (int af, int type, int protocol) {
+int SLLIB_createSocket (int af, int type, int protocol) {
 	socket_t sock;
 	const int y = 1;
 	sock = socket (af, type, protocol);
@@ -183,7 +183,7 @@ int createSocket (int af, int type, int protocol) {
 }
 
 /* Binds the socket to address and Port. */
-void bindSocket (socket_t *sock, unsigned long adress, unsigned short port) {
+void SLLIB_bindSocket (socket_t *sock, unsigned long adress, unsigned short port) {
 	struct sockaddr_in server;
 	memset (&server, 0, sizeof(server));
 	server.sin_family = AF_INET;
@@ -194,14 +194,14 @@ void bindSocket (socket_t *sock, unsigned long adress, unsigned short port) {
 }
 
 /* Tells the socket to accept connections. */
-void listenSocket ( socket_t *sock) {
+void SLLIB_listenSocket ( socket_t *sock) {
 	if (listen (*sock, 5) == -1)
 		errorExit ("Error: listen");
 }
 
 /* Handle connections to the clients.
  * accept() blocks until client accepts connection. */
-void acceptSocket ( socket_t *socket, socket_t *new_socket) {
+void SLLIB_acceptSocket ( socket_t *socket, socket_t *new_socket) {
 	struct sockaddr_in client;
 	unsigned int len;
 
@@ -212,7 +212,7 @@ void acceptSocket ( socket_t *socket, socket_t *new_socket) {
 }
 
 /* Connects socket. */
-void connectSocket (socket_t *sock, char *serv_addr, unsigned short port) {
+void SLLIB_connectSocket (socket_t *sock, char *serv_addr, unsigned short port) {
 	struct sockaddr_in server;
 	struct hostent *host_info;
 	unsigned long addr;
@@ -237,13 +237,13 @@ void connectSocket (socket_t *sock, char *serv_addr, unsigned short port) {
 }
 
 /* Send data via TCP */
-void tcpSend ( socket_t *sock, char *data, size_t size) {
+void SLLIB_tcpSend ( socket_t *sock, char *data, size_t size) {
 	if (send (*sock, data, size, 0) == -1)
 		errorExit ("Fehler bei send()");
 }
 
 /* Receive data via TCP */
-int tcpRecv ( socket_t *sock, char *data, size_t size) {
+int SLLIB_tcpRecv ( socket_t *sock, char *data, size_t size) {
 	unsigned int len;
 	len = recv (*sock, data, size, 0);
 	if (len > 0 || len != -1) {
@@ -254,8 +254,9 @@ int tcpRecv ( socket_t *sock, char *data, size_t size) {
 		return (-1);
 	}
 }
+
 /* Send data via UDP */
-void udpSend ( socket_t *sock, char *data, size_t size, char *addr,
+void SLLIB_udpSend ( socket_t *sock, char *data, size_t size, char *addr,
 		unsigned short port) {
 	struct sockaddr_in addr_sento;
 	struct hostent *h;
@@ -278,7 +279,7 @@ void udpSend ( socket_t *sock, char *data, size_t size, char *addr,
 }
 
 /* Recieve data via UDP */
-int udpRecv ( socket_t *sock, void *data, size_t size) {
+int SLLIB_udpRecv ( socket_t *sock, void *data, size_t size) {
 	struct sockaddr_in addr_recvfrom;
 	unsigned int len;
 	int n;
@@ -294,12 +295,12 @@ int udpRecv ( socket_t *sock, void *data, size_t size) {
 }
 
 /* Close socket */
-void closeSocket ( socket_t *sock) {
+void SLLIB_closeSocket ( socket_t *sock) {
 	close (*sock);
 }
 
-/* Empty under Linux... */
-void cleanUp (void) {
+/* Empty under Linux */
+void SLLIB_cleanUp (void) {
 	return;
 }
 #endif
