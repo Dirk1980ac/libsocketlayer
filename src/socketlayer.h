@@ -2,7 +2,7 @@
  ============================================================================
  Name        : socketlayer.h
  Author      : Dirk Gottschalk
- Version     : 2.0.0
+ Version     : 2.1.1
  Copyright   : (c) 2015 Dirk Gottschalk <dirk.gottschalk1980@googlemail.com>
  Description : Header for socket abstraction layer
  ============================================================================
