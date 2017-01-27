@@ -14,7 +14,7 @@
 /* Source for MinGW compile */
 
 /* Error message for Syslog  */
-void errorExit(char *error_message) {
+void SLLIB_SLLIB_errorExit(char *error_message) {
 	fprintf(stderr, "%s: %d\n", error_message, WSAGetLastError());
 	exit (EXIT_FAILURE);
 }
@@ -28,12 +28,12 @@ int SLLIB_createSocket(int af, int type, int protocol) {
 	WSADATA wsaData;
 	wVersionRequested = MAKEWORD(1, 1);
 	if (WSAStartup(wVersionRequested, &wsaData) != 0)
-	errorExit("Winsock could not be initialized!");
+	SLLIB_SLLIB_errorExit("Winsock could not be initialized!");
 
 	/* Create socket. */
 	sock = socket(af, type, protocol);
 	if (sock < 0)
-	errorExit("Error while creating socket!");
+	SLLIB_errorExit("Error while creating socket!");
 	return sock;
 }
 
@@ -46,13 +46,13 @@ void SLLIB_bindSocket(socket_t *sock, unsigned long adress, unsigned short port)
 	server.sin_addr.s_addr = htonl(adress);
 	server.sin_port = htons(port);
 	if (bind(*sock, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR)
-	errorExit("Couldn't bind to socket!");
+	SLLIB_errorExit("Couldn't bind to socket!");
 }
 
 /* Tells the socket to accept connections. */
 void SLLIB_listenSocket( socket_t *sock) {
 	if (listen(*sock, 5) == -1)
-	errorExit("Listen error!");
+	SLLIB_errorExit("Listen error!");
 }
 
 /* Handle connections to the clients.
@@ -64,7 +64,7 @@ void SLLIB_acceptSocket( socket_t *socket, socket_t *new_socket) {
 	len = sizeof(client);
 	*new_socket = accept(*socket, (struct sockaddr *) &client, &len);
 	if (*new_socket == INVALID_SOCKET)
-	errorExit("Error on accept()!");
+	SLLIB_errorExit("Error on accept()!");
 }
 
 /* Connects socket. */
@@ -80,7 +80,7 @@ void SLLIB_connectSocket( socket_t *sock, char *serv_addr, unsigned short port) 
 		/* Resolve hostname */
 		host_info = gethostbyname(serv_addr);
 		if (NULL == host_info)
-		errorExit("Unknown server");
+		SLLIB_errorExit("Unknown server");
 		memcpy((char *) &server.sin_addr, host_info->h_addr,
 				host_info->h_length);
 	}
@@ -89,13 +89,13 @@ void SLLIB_connectSocket( socket_t *sock, char *serv_addr, unsigned short port) 
 
 	/* Establish connection. */
 	if (connect(*sock, (struct sockaddr*) &server, sizeof(server)) < 0)
-	errorExit("Unable to connect to server");
+	SLLIB_errorExit("Unable to connect to server");
 }
 
 /* Send data via TCP */
 void SLLIB_tcpSend( socket_t *sock, char *data, size_t size) {
 	if (send(*sock, data, size, 0) == SOCKET_ERROR)
-	errorExit("ERROR: send()");
+	SLLIB_errorExit("ERROR: send()");
 }
 
 /* Receive data via TCP */
@@ -105,7 +105,7 @@ int SLLIB_tcpRecv( socket_t *sock, char *data, size_t size) {
 	if (len > 0 || len != SOCKET_ERROR)
 	data[len] = '\0';
 	else
-	errorExit("ERROR: recv()");
+	SLLIB_errorExit("ERROR: recv()");
 	return len;
 }
 
@@ -119,7 +119,7 @@ void SLLIB_udpSend( socket_t *sock, char *data, size_t size, char *addr,
 	/* Resolve hostname */
 	h = gethostbyname(addr);
 	if (h == NULL)
-	errorExit("Unknown host?");
+	SLLIB_errorExit("Unknown host?");
 
 	addr_sento.sin_family = h->h_addrtype;
 	memcpy((char *) &addr_sento.sin_addr.s_addr, h->h_addr_list[0],
@@ -129,7 +129,7 @@ void SLLIB_udpSend( socket_t *sock, char *data, size_t size, char *addr,
 	rc = sendto(*sock, data, size, 0, (struct sockaddr *) &addr_sento,
 			sizeof(addr_sento));
 	if (rc == SOCKET_ERROR)
-	errorExit("Could not send data - sendto()");
+	SLLIB_errorExit("Could not send data - sendto()");
 }
 
 /* Receive data via UDP */
@@ -142,7 +142,7 @@ int SLLIB_udpRecv( socket_t *sock, void *data, size_t size) {
 	n = recvfrom(*sock, data, size, 0, (struct sockaddr *) &addr_recvfrom,
 			&len);
 	if (n == SOCKET_ERROR)
-	errorExit("ERROR: recvfrom()");
+	SLLIB_errorExit("ERROR: recvfrom()");
 
 	return n;
 }
@@ -164,7 +164,7 @@ void SLLIB_cleanUp(void) {
 /* Source for Linux compile */
 
 /* Returns Errors and exits application. */
-void errorExit (char *error_message) {
+void SLLIB_errorExit (char *error_message) {
 	fprintf (stderr, "%s: %s\n", error_message, strerror (errno));
 	exit (EXIT_FAILURE);
 }
@@ -175,7 +175,7 @@ int SLLIB_createSocket (int af, int type, int protocol) {
 	const int y = 1;
 	sock = socket (af, type, protocol);
 	if (sock < 0)
-		errorExit ("Unable to create socket");
+		SLLIB_errorExit ("Unable to create socket");
 
 	setsockopt (sock, SOL_SOCKET,
 	SO_REUSEADDR, &y, sizeof(int));
@@ -190,13 +190,13 @@ void SLLIB_bindSocket (socket_t *sock, unsigned long adress, unsigned short port
 	server.sin_addr.s_addr = htonl (adress);
 	server.sin_port = htons (port);
 	if (bind (*sock, (struct sockaddr*) &server, sizeof(server)) < 0)
-		errorExit ("Unable to bind socket");
+		SLLIB_errorExit ("Unable to bind socket");
 }
 
 /* Tells the socket to accept connections. */
 void SLLIB_listenSocket ( socket_t *sock) {
 	if (listen (*sock, 5) == -1)
-		errorExit ("Error: listen");
+		SLLIB_errorExit ("Error: listen");
 }
 
 /* Handle connections to the clients.
@@ -208,7 +208,7 @@ void SLLIB_acceptSocket ( socket_t *socket, socket_t *new_socket) {
 	len = sizeof(client);
 	*new_socket = accept (*socket, (struct sockaddr *) &client, &len);
 	if (*new_socket == -1)
-		errorExit ("Error in accept");
+		SLLIB_errorExit ("Error in accept");
 }
 
 /* Connects socket. */
@@ -224,7 +224,7 @@ void SLLIB_connectSocket (socket_t *sock, char *serv_addr, unsigned short port) 
 		/* Resolve hostname */
 		host_info = gethostbyname (serv_addr);
 		if (NULL == host_info)
-			errorExit ("Unknown host");
+			SLLIB_errorExit ("Unknown host");
 		memcpy ((char *) &server.sin_addr, host_info->h_addr,
 		host_info->h_length);
 	}
@@ -233,13 +233,13 @@ void SLLIB_connectSocket (socket_t *sock, char *serv_addr, unsigned short port) 
 
 	/* Establish connection */
 	if (connect (*sock, (struct sockaddr *) &server, sizeof(server)) < 0)
-		errorExit ("Could not connect to server");
+		SLLIB_errorExit ("Could not connect to server");
 }
 
 /* Send data via TCP */
 void SLLIB_tcpSend ( socket_t *sock, char *data, size_t size) {
 	if (send (*sock, data, size, 0) == -1)
-		errorExit ("Fehler bei send()");
+		SLLIB_errorExit ("Fehler bei send()");
 }
 
 /* Receive data via TCP */
@@ -250,7 +250,7 @@ int SLLIB_tcpRecv ( socket_t *sock, char *data, size_t size) {
 		data[len] = '\0';
 		return (len);
 	} else {
-		errorExit ("ERROR on recv()");
+		SLLIB_errorExit ("ERROR on recv()");
 		return (-1);
 	}
 }
@@ -265,7 +265,7 @@ void SLLIB_udpSend ( socket_t *sock, char *data, size_t size, char *addr,
 	/* IP-Adresse des Servers überprüfen */
 	h = gethostbyname (addr);
 	if (h == NULL)
-		errorExit ("Unknown host?");
+		SLLIB_errorExit ("Unknown host?");
 
 	addr_sento.sin_family = h->h_addrtype;
 	memcpy ((char *) &addr_sento.sin_addr.s_addr, h->h_addr_list[0],
@@ -275,7 +275,7 @@ void SLLIB_udpSend ( socket_t *sock, char *data, size_t size, char *addr,
 	rc = sendto (*sock, data, size, 0, (struct sockaddr *) &addr_sento,
 			sizeof(addr_sento));
 	if (rc < 0)
-		errorExit ("Could not send - sendto()");
+		SLLIB_errorExit ("Could not send - sendto()");
 }
 
 /* Recieve data via UDP */
