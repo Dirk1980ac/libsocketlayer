@@ -38,7 +38,7 @@
 #endif 
 
 /* Function prototypes */
-extern void errorExit (char *error_message); /* Exit with error message */
+extern void SLLIB_errorExit (char *error_message); /* Exit with error message */
 extern int SLLIB_createSocket (int af, int type, int protocol); /* Create socket */
 extern void SLLIB_bindSocket (socket_t *sock, unsigned long adress,
 		unsigned short port); /* Bind socket */
