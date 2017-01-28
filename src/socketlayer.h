@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
  ============================================================================
  Name        : socketlayer.h
  Author      : Dirk Gottschalk
@@ -7,6 +8,15 @@
 	 Description : Header for socket abstraction layer
 	 ============================================================================
 	 */
+=======
+ ***************************************************************************
+ *  File:       socketlayer.h
+ *  Created:    28.01.2017 16:28:48
+ *  Author:     Dirk Gottschalk <user@domain.org>
+ *  Copyright:  Copyright 2017 by Dirk Gottschalk
+ ***************************************************************************
+ */
+>>>>>>> b6626bdb1f1e2935978b913a114613908485372b
 
 #ifndef SOCKETLAYER_H_
 #define SOCKETLAYER_H_
