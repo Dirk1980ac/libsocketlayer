@@ -4,14 +4,11 @@
  Author      : Dirk Gottschalk
  Version     : 1.1.3
  Copyright   : (c) 2015 Dirk Gottschalk <dirk.gottschalk1980@googlemail.com>
- Description : Network Socket abstraction Layer for Windows / Linux
- ============================================================================
- */
+	 Description : Network Socket abstraction Layer for Windows / Linux
+	 ============================================================================
+	 */
 
 #include <socketlayer.h>
-
-
-/* Source for Linux compile */
 
 /* Returns Errors and exits application. */
 void SLLIB_errorExit (char *error_message) {
@@ -27,45 +24,39 @@ int SLLIB_createSocket (int af, int type, int protocol) {
 	WSADATA wsaData;
 	wVersionRequested = MAKEWORD(1, 1);
 	if (WSAStartup(wVersionRequested, &wsaData) != 0)
-	SLLIB_errorExit("Winsock could not be initialized!");
-
-	/* Create socket. */
-	sock = socket(af, type, protocol);
-	if (sock < 0)
-	SLLIB_errorExit("Error while creating socket!");
-	return sock;
+		SLLIB_errorExit("Winsock could not be initialized!");
 #endif
 #if __linux__
 	socket_t sock;
 	const int y = 1;
-	sock = socket (af, type, protocol);
-	if (sock < 0)
-		SLLIB_errorExit ("Unable to create socket");
 
-	setsockopt (sock, SOL_SOCKET,
-	SO_REUSEADDR, &y, sizeof(int));
-	return (sock);
 #endif
+	/* Create socket. */
+	sock = socket(af, type, protocol);
+	if (sock < 0)
+		SLLIB_errorExit("Error while creating socket!");
+#if __linux__
+	setsockopt (sock, SOL_SOCKET,
+				SO_REUSEADDR, &y, sizeof(int));
+#endif
+	return sock;
 }
 
 /* Binds the socket to address and Port. */
 void SLLIB_bindSocket (socket_t *sock, unsigned long adress, unsigned short port) {
-#if __MINGW32__
-		struct sockaddr_in server;
+	struct sockaddr_in server;
 
 	memset(&server, 0, sizeof(server));
 	server.sin_family = AF_INET;
 	server.sin_addr.s_addr = htonl(adress);
 	server.sin_port = htons(port);
+
+#if __MINGW32__
 	if (bind(*sock, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR)
-	SLLIB_errorExit("Couldn't bind to socket!");
+		SLLIB_errorExit("Couldn't bind to socket!");
 #endif
+	
 #if __linux__
-	struct sockaddr_in server;
-	memset (&server, 0, sizeof(server));
-	server.sin_family = AF_INET;
-	server.sin_addr.s_addr = htonl (adress);
-	server.sin_port = htons (port);
 	if (bind (*sock, (struct sockaddr*) &server, sizeof(server)) < 0)
 		SLLIB_errorExit ("Unable to bind socket");
 #endif
@@ -81,13 +72,13 @@ void SLLIB_listenSocket ( socket_t *sock) {
  * accept() blocks until client accepts connection. */
 void SLLIB_acceptSocket ( socket_t *socket, socket_t *new_socket) {
 #if __MINGW32__
-		struct sockaddr_in client;
+	struct sockaddr_in client;
 	unsigned int len;
 
 	len = sizeof(client);
 	*new_socket = accept(*socket, (struct sockaddr *) &client, &len);
 	if (*new_socket == INVALID_SOCKET)
-	SLLIB_errorExit("Error on accept()!");
+		SLLIB_errorExit("Error on accept()!");
 #endif
 #if __linux__
 	struct sockaddr_in client;
@@ -113,7 +104,7 @@ void SLLIB_connectSocket (socket_t *sock, char *serv_addr, unsigned short port) 
 		if (NULL == host_info)
 			SLLIB_errorExit ("Unknown host");
 		memcpy ((char *) &server.sin_addr, host_info->h_addr,
-		host_info->h_length);
+				host_info->h_length);
 	}
 	server.sin_family = AF_INET;
 	server.sin_port = htons (port);
@@ -161,7 +152,7 @@ int SLLIB_tcpRecv ( socket_t *sock, char *data, size_t size) {
 
 /* Send data via UDP */
 void SLLIB_udpSend ( socket_t *sock, char *data, size_t size, char *addr, 
-	unsigned short port) {
+					unsigned short port) {
 	struct sockaddr_in addr_sento;
 	struct hostent *h;
 	int rc;
@@ -177,10 +168,10 @@ void SLLIB_udpSend ( socket_t *sock, char *data, size_t size, char *addr,
 	addr_sento.sin_port = htons (port);
 
 	rc = sendto (*sock, data, size, 0, (struct sockaddr *) &addr_sento,
-			sizeof(addr_sento));
+				 sizeof(addr_sento));
 #if __MINGW32__
 	if (rc == SOCKET_ERROR)
-	SLLIB_errorExit("Could not send data - sendto()");
+		SLLIB_errorExit("Could not send data - sendto()");
 #endif
 #if __linux__
 	if (rc < 0)
@@ -196,10 +187,10 @@ int SLLIB_udpRecv ( socket_t *sock, void *data, size_t size) {
 
 	len = sizeof(addr_recvfrom);
 	n = recvfrom (*sock, data, size, 0, (struct sockaddr *) &addr_recvfrom,
-			&len);
+				  &len);
 #if __MINGW32__
-		if (n == SOCKET_ERROR)
-	SLLIB_errorExit("ERROR: recvfrom()");
+	if (n == SOCKET_ERROR)
+		SLLIB_errorExit("ERROR: recvfrom()");
 #endif
 #if __linux__
 	if (n < 0) {
@@ -225,6 +216,5 @@ void SLLIB_cleanUp (void) {
 #if __MINGW32__
 	WSACleanup();
 #endif
-	return;
 }
 
