@@ -1,14 +1,4 @@
 /*
-<<<<<<< HEAD
- ============================================================================
- Name        : socketlayer.c
- Author      : Dirk Gottschalk
- Version     : 1.1.3
- Copyright   : (c) 2015 Dirk Gottschalk <dirk.gottschalk1980@googlemail.com>
-	 Description : Network Socket abstraction Layer for Windows / Linux
-	 ============================================================================
-	 */
-=======
  ***************************************************************************
  *  File:       lib.c
  *  Created:    28.01.2017 16:28:26
@@ -16,7 +6,7 @@
  *  Copyright:  Copyright 2017 by Dirk Gottschalk
  ***************************************************************************
  */
->>>>>>> b6626bdb1f1e2935978b913a114613908485372b
+
 
 #include <socketlayer.h>
 
