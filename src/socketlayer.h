@@ -1,12 +1,11 @@
 /*
- ============================================================================
- Name        : socketlayer.h
- Author      : Dirk Gottschalk
- Version     : 2.1.1
- Copyright   : (c) 2015 Dirk Gottschalk <dirk.gottschalk1980@googlemail.com>
-	 Description : Header for socket abstraction layer
-	 ============================================================================
-	 */
+ ***************************************************************************
+ *  File:       socketlayer.h
+ *  Created:    28.01.2017 16:28:48
+ *  Author:     Dirk Gottschalk <user@domain.org>
+ *  Copyright:  Copyright 2017 by Dirk Gottschalk
+ ***************************************************************************
+ */
 
 #ifndef SOCKETLAYER_H_
 #define SOCKETLAYER_H_

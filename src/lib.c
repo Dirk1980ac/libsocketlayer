@@ -1,12 +1,11 @@
 /*
- ============================================================================
- Name        : socketlayer.c
- Author      : Dirk Gottschalk
- Version     : 2.1.1
- Copyright   : (c) 2015 Dirk Gottschalk <dirk.gottschalk1980@googlemail.com>
-	 Description : Network Socket abstraction Layer for Windows / Linux
-	 ============================================================================
-	 */
+ ***************************************************************************
+ *  File:       lib.c
+ *  Created:    28.01.2017 16:28:26
+ *  Author:     Dirk Gottschalk <user@domain.org>
+ *  Copyright:  Copyright 2017 by Dirk Gottschalk
+ ***************************************************************************
+ */
 
 #include <socketlayer.h>
 
@@ -55,7 +54,7 @@ void SLLIB_bindSocket (socket_t *sock, unsigned long adress, unsigned short port
 	if (bind(*sock, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR)
 		SLLIB_errorExit("Couldn't bind to socket!");
 #endif
-	
+
 #if __linux__
 	if (bind (*sock, (struct sockaddr*) &server, sizeof(server)) < 0)
 		SLLIB_errorExit ("Unable to bind socket");
@@ -217,4 +216,3 @@ void SLLIB_cleanUp (void) {
 	WSACleanup();
 #endif
 }
-
