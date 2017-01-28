@@ -55,7 +55,7 @@ void SLLIB_bindSocket (socket_t *sock, unsigned long adress, unsigned short port
 	if (bind(*sock, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR)
 		SLLIB_errorExit("Couldn't bind to socket!");
 #endif
-	
+
 #if __linux__
 	if (bind (*sock, (struct sockaddr*) &server, sizeof(server)) < 0)
 		SLLIB_errorExit ("Unable to bind socket");
@@ -217,4 +217,3 @@ void SLLIB_cleanUp (void) {
 	WSACleanup();
 #endif
 }
-
