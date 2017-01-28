@@ -8,3 +8,10 @@ functions.
 
 The provided .spec files are intended to be used whith Fedora Linux, it's
 possible that there are changes required for other distros.
+
+
+*** Attention ***
+
+SVN repository disabled on Jan the 28th 2017 due to permanent
+errors while syncing with GIT. Please use GIT for Checkouts from
+sourceforge from now on.
