@@ -1,10 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
-<<<<<<< HEAD
-AC_INIT(socketlayer, 2.1.0)
-=======
 AC_INIT(socketlayer, 2.1.2)
->>>>>>> b6626bdb1f1e2935978b913a114613908485372b
+
 
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
