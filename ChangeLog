@@ -2,6 +2,8 @@
 
 	* configure.ac: Changed configure.ac
 	* ChangeLog: Initialized Changelog with git2cl
+	* src/mingw-socketlayer.spec, src/socketlayer.spec:
+	Updated version in rpm spec files
 
 2017-01-30  Dirk Gottschalk <dirk.gottschalk1980@googlemail.com>
 

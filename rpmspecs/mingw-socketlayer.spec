@@ -1,8 +1,8 @@
 %{?mingw_package_header}
 
 Name:           mingw-socketlayer
-Version:        2.0.7
-Release:        4%{?dist}
+Version:        2.1.2
+Release:        1%{?dist}
 Summary:        MinGW socket abstraction layer
 
 License:        LGPLv2+

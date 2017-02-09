@@ -1,14 +1,10 @@
 Name:           socketlayer
-Version:        2.0.7
-Release:        4%{?dist}
+Version:        2.1.2
+Release:        1%{?dist}
 Summary:        Socket abstraction library
 
-License:	LGPLv2+        
-#URL:            
-Source0:	%{name}-%{version}.tar.gz
-
-#BuildRequires:  
-#Requires:       
+License:        LGPLv2+        
+Source0:        %{name}-%{version}.tar.gz
 
 %description
 Socket abstraction library for platform independent developement for Linux and Windows (using MinGW).
