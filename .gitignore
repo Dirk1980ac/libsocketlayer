@@ -65,7 +65,11 @@ Debug/
 # Builder buildconfig
 .buildconfig
 
+# File backups
+*~
+
 # Autotools stuff
+autom4te.cache
 Makefile
 Makecache
 Makefile.in

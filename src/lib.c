@@ -79,7 +79,7 @@ int SLLIB_acceptSocket ( socket_t *socket, socket_t *new_socket) {
 	unsigned int len;
 
 	len = sizeof(client);
-	*new_socket = accept(*socket, (struct sockaddr *) &client, &len);
+	*new_socket = accept(*socket, (struct sockaddr *) &client, (int *) &len);
 	if (*new_socket == INVALID_SOCKET)
 		return (-1);
 #endif
@@ -140,10 +140,9 @@ int SLLIB_tcpRecv ( socket_t *sock, void *data, size_t size) {
 	int len;
 	len = recv(*sock, data, size, 0);
 	if (len > 0 || len != SOCKET_ERROR)
-		//data[len] = '\0';
+		return (len);
 	else
-		SLLIB_errorExit("ERROR: recv()");
-	return len;
+		return (-1);
 #endif
 #if __linux__
 	unsigned int len;
@@ -155,12 +154,11 @@ int SLLIB_tcpRecv ( socket_t *sock, void *data, size_t size) {
 		return (-1);
 	}
 #endif
-  return ((int) len);
 }
 
 /* Send data via UDP */
-int SLLIB_udpSend ( socket_t *sock, void *data, size_t size, char *addr,
-					unsigned short port) {
+int SLLIB_udpSend (socket_t *sock, void *data, size_t size, char *addr,
+                   unsigned short port) {
 	struct sockaddr_in addr_sento;
 	struct hostent *h;
 	int rc;
@@ -179,7 +177,7 @@ int SLLIB_udpSend ( socket_t *sock, void *data, size_t size, char *addr,
 				 sizeof(addr_sento));
 #if __MINGW32__
 	if (rc == SOCKET_ERROR)
-		SLLIB_errorExit("Could not send data - sendto()");
+		return (-1);
 #endif
 #if __linux__
 	if (rc < 0)
@@ -199,7 +197,7 @@ int SLLIB_udpRecv ( socket_t *sock, void *data, size_t size) {
 				  &len);
 #if __MINGW32__
 	if (n == SOCKET_ERROR)
-		SLLIB_errorExit("ERROR: recvfrom()");
+		return (-1);
 #endif
 #if __linux__
 	if (n < 0) {
