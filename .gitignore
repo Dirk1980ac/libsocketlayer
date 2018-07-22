@@ -35,6 +35,7 @@
 *.i*86
 *.x86_64
 *.hex
+systemd/garmin-srv.service
 
 # Debug files
 *.dSYM/
@@ -50,10 +51,43 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# Ignore Anjuta IDE files
-.anjuta/
-*anjuta*
-.anjuta*
+# Test-Built directories
+Debug/
 
-# Ignore backup files
-*~
+# Distribution packages
+*.tar.gz
+
+# Anjuta files
+.anjuta/
+*.anjuta
+*anjuta*
+
+# Builder buildconfig
+.buildconfig
+
+# Autotools stuff
+Makefile
+Makecache
+Makefile.in
+aclocal.m4
+compile
+config.status
+config.log
+config.h
+config.guess
+config.h.in
+config.sub
+configure
+depcomp
+etc/Makefile.in
+install-sh
+missing
+stamp-h1
+*/Makefile.in
+*/.deps
+
+# Ignore built ChangeLog
+ChangeLog
+
+# GnuPG signatures
+*.sig

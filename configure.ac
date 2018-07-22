@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(socketlayer, 2.1.2)
-
+AC_INIT(socketlayer,[m4_esyscmd_s([git describe --long --always])], \
+        Dirk Gottschalk <dirk.gottschalk1980@googlemail.com)
 
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -33,8 +33,7 @@ esac
 AM_CONDITIONAL(PLATFORM_WIN32, test x"$platform_win32" = "xyes")
 AM_CONDITIONAL(NATIVE_WIN32, test x"$native_win32" = "xyes")
 
-AC_CHECK_HEADERS([arpa/inet.h windef.h netinet/in.h stdlib.h sys/socket.h
-                  unistd.h windows.h winsock2.h error.h sys/types.h netdb.h])
+AC_CHECK_HEADERS([arpa/inet.h windef.h netinet/in.h stdlib.h sys/socket.h unistd.h windows.h winsock2.h error.h sys/types.h netdb.h])
 
 LT_INIT([win32-dll])
 

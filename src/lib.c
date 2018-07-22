@@ -9,12 +9,13 @@
 
 
 #include <socketlayer.h>
-
-/* Returns Errors and exits application. */
+/*
+* Returns Errors and exits application. *
 void SLLIB_errorExit (char *error_message) {
 	fprintf (stderr, "%s: %s\n", error_message, strerror (errno));
 	exit (EXIT_FAILURE);
 }
+*/
 
 /* Create socket */
 int SLLIB_createSocket (int af, int type, int protocol) {
@@ -24,7 +25,7 @@ int SLLIB_createSocket (int af, int type, int protocol) {
 	WSADATA wsaData;
 	wVersionRequested = MAKEWORD(1, 1);
 	if (WSAStartup(wVersionRequested, &wsaData) != 0)
-		SLLIB_errorExit("Winsock could not be initialized!");
+		return (-1);
 #endif
 #if __linux__
 	socket_t sock;
@@ -34,7 +35,7 @@ int SLLIB_createSocket (int af, int type, int protocol) {
 	/* Create socket. */
 	sock = socket(af, type, protocol);
 	if (sock < 0)
-		SLLIB_errorExit("Error while creating socket!");
+		return (-1);
 #if __linux__
 	setsockopt (sock, SOL_SOCKET,
 				SO_REUSEADDR, &y, sizeof(int));
@@ -43,7 +44,7 @@ int SLLIB_createSocket (int af, int type, int protocol) {
 }
 
 /* Binds the socket to address and Port. */
-void SLLIB_bindSocket (socket_t *sock, unsigned long adress, unsigned short port) {
+int SLLIB_bindSocket (socket_t *sock, unsigned long adress, unsigned short port) {
 	struct sockaddr_in server;
 
 	memset(&server, 0, sizeof(server));
@@ -52,25 +53,27 @@ void SLLIB_bindSocket (socket_t *sock, unsigned long adress, unsigned short port
 	server.sin_port = htons(port);
 
 #if __MINGW32__
-	if (bind(*sock, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR)
-		SLLIB_errorExit("Couldn't bind to socket!");
+  	if (bind(*sock, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR)
+		return (-1);
 #endif
 
 #if __linux__
 	if (bind (*sock, (struct sockaddr*) &server, sizeof(server)) < 0)
-		SLLIB_errorExit ("Unable to bind socket");
+		return (-1);
 #endif
+  return (0);
 }
 
 /* Tells the socket to accept connections. */
-void SLLIB_listenSocket ( socket_t *sock) {
+int SLLIB_listenSocket ( socket_t *sock) {
 	if (listen (*sock, 5) == -1)
-		SLLIB_errorExit ("Error: listen");
+		return (-1);
+  return 0;
 }
 
 /* Handle connections to the clients.
  * accept() blocks until client accepts connection. */
-void SLLIB_acceptSocket ( socket_t *socket, socket_t *new_socket) {
+int SLLIB_acceptSocket ( socket_t *socket, socket_t *new_socket) {
 #if __MINGW32__
 	struct sockaddr_in client;
 	unsigned int len;
@@ -78,7 +81,7 @@ void SLLIB_acceptSocket ( socket_t *socket, socket_t *new_socket) {
 	len = sizeof(client);
 	*new_socket = accept(*socket, (struct sockaddr *) &client, &len);
 	if (*new_socket == INVALID_SOCKET)
-		SLLIB_errorExit("Error on accept()!");
+		return (-1);
 #endif
 #if __linux__
 	struct sockaddr_in client;
@@ -86,12 +89,13 @@ void SLLIB_acceptSocket ( socket_t *socket, socket_t *new_socket) {
 	len = sizeof(client);
 	*new_socket = accept (*socket, (struct sockaddr *) &client, &len);
 	if (*new_socket == -1)
-		SLLIB_errorExit ("Error in accept");
+		return (-1);
 #endif
+  return (0);
 }
 
 /* Connects socket. */
-void SLLIB_connectSocket (socket_t *sock, char *serv_addr, unsigned short port) {
+int SLLIB_connectSocket (socket_t *sock, char *serv_addr, unsigned short port) {
 	struct sockaddr_in server;
 	struct hostent *host_info;
 	unsigned long addr;
@@ -102,7 +106,7 @@ void SLLIB_connectSocket (socket_t *sock, char *serv_addr, unsigned short port) 
 		/* Resolve hostname */
 		host_info = gethostbyname (serv_addr);
 		if (NULL == host_info)
-			SLLIB_errorExit ("Unknown host");
+			return (-1);
 		memcpy ((char *) &server.sin_addr, host_info->h_addr,
 				host_info->h_length);
 	}
@@ -111,28 +115,32 @@ void SLLIB_connectSocket (socket_t *sock, char *serv_addr, unsigned short port) 
 
 	/* Establish connection */
 	if (connect (*sock, (struct sockaddr *) &server, sizeof(server)) < 0)
-		SLLIB_errorExit ("Could not connect to server");
+		return (-1);
+  return (0);
 }
 
 /* Send data via TCP */
-void SLLIB_tcpSend ( socket_t *sock, char *data, size_t size) {
+int SLLIB_tcpSend ( socket_t *sock, void *data, size_t size) {
+  int len;
 #if __MINGW32__
-	if (send(*sock, data, size, 0) == SOCKET_ERROR)
-		SLLIB_errorExit("ERROR: send()");
+	if ( (len = send(*sock, data, size, 0)) == SOCKET_ERROR)
+		return -1;
 #endif
 #if __linux__
-	if (send (*sock, data, size, 0) == -1)
-		SLLIB_errorExit ("ERROR: send()");
+	if ((len = send (*sock, data, size, 0)) == -1)
+		return (-1);
 #endif
+  else
+    return (len);
 }
 
 /* Receive data via TCP */
-int SLLIB_tcpRecv ( socket_t *sock, char *data, size_t size) {
+int SLLIB_tcpRecv ( socket_t *sock, void *data, size_t size) {
 #if __MINGW32__
 	int len;
 	len = recv(*sock, data, size, 0);
 	if (len > 0 || len != SOCKET_ERROR)
-		data[len] = '\0';
+		//data[len] = '\0';
 	else
 		SLLIB_errorExit("ERROR: recv()");
 	return len;
@@ -141,17 +149,17 @@ int SLLIB_tcpRecv ( socket_t *sock, char *data, size_t size) {
 	unsigned int len;
 	len = recv (*sock, data, size, 0);
 	if (len > 0 || len != -1) {
-		data[len] = '\0';
+		// data[len] = '\0';
 		return (len);
 	} else {
-		SLLIB_errorExit ("ERROR on recv()");
 		return (-1);
 	}
 #endif
+  return ((int) len);
 }
 
 /* Send data via UDP */
-void SLLIB_udpSend ( socket_t *sock, char *data, size_t size, char *addr, 
+int SLLIB_udpSend ( socket_t *sock, void *data, size_t size, char *addr,
 					unsigned short port) {
 	struct sockaddr_in addr_sento;
 	struct hostent *h;
@@ -160,7 +168,7 @@ void SLLIB_udpSend ( socket_t *sock, char *data, size_t size, char *addr,
 	/* IP-Adresse des Servers überprüfen */
 	h = gethostbyname (addr);
 	if (h == NULL)
-		SLLIB_errorExit ("Unknown host?");
+		return (-1);
 
 	addr_sento.sin_family = h->h_addrtype;
 	memcpy ((char *) &addr_sento.sin_addr.s_addr, h->h_addr_list[0],
@@ -175,8 +183,9 @@ void SLLIB_udpSend ( socket_t *sock, char *data, size_t size, char *addr,
 #endif
 #if __linux__
 	if (rc < 0)
-		SLLIB_errorExit ("Could not send - sendto()");
+		return (-1);
 #endif
+  return (rc);
 }
 
 /* Recieve data via UDP */
