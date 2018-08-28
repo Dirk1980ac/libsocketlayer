@@ -1,5 +1,5 @@
 Name:           socketlayer
-Version:        2.1.4
+Version:        2.1.5
 Release:        1%{?dist}
 Summary:        Socket abstraction library
 
@@ -23,6 +23,7 @@ developing applications that use %{name}.
 
 
 %build
+./autogen.sh
 %configure --disable-static
 make %{?_smp_mflags}
 
@@ -50,6 +51,9 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 /usr/share/doc/socketlayer/*
 
 %changelog
+* Tue Aug 28 2018 Dirk Gottschalk <dirk.gottschalk1980@googlemail.com> 2.1.5-1
+- Testbuild II
+
 * Tue Aug 28 2018 Dirk Gottschalk <dirk.gottschalk1980@googlemail.com> 2.1.4-1
 - Testbuild 
 
