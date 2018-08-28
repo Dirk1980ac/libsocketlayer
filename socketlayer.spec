@@ -1,5 +1,5 @@
 Name:           socketlayer
-Version:        2.1.3
+Version:        2.1.4
 Release:        1%{?dist}
 Summary:        Socket abstraction library
 
@@ -50,6 +50,9 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 /usr/share/doc/socketlayer/*
 
 %changelog
+* Tue Aug 28 2018 Dirk Gottschalk <dirk.gottschalk1980@googlemail.com> 2.1.4-1
+- Testbuild 
+
 * Tue Aug 28 2018 Dirk Gottschalk <dirk.gottschalk1980@googlemail.com> 2.1.3-1
 - new package built with tito
 
